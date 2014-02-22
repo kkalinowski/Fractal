@@ -14,10 +14,32 @@
 
         <div class="row">
             <div class="small-3 columns">
-                <button class="button" ng-click="renderFractal()">Render fractal</button>
+                <form>
+                    <label>
+                        x min
+                        <input type="text" ng-model="xMin" />
+                    </label>
+                    <label>
+                        x max
+                        <input type="text" ng-model="xMax" />
+                    </label>
+                    <label>
+                        y min
+                        <input type="text" ng-model="yMin" />
+                    </label>
+                    <label>
+                        y max
+                        <input type="text" ng-model="yMax" />
+                    </label>
+                    <label>
+                        iterations
+                        <input type="text" ng-model="iterations" />
+                    </label>
+                    <button class="button" ng-click="renderFractal()">Render fractal</button>
+                </form>
             </div>
             <div class="small-9 columns">
-                <canvas fractal-canvas width="400" height="400" style="border: 1px solid black;"></canvas>
+                <canvas id="cnvs" fractal-canvas width="400" height="400" style="border: 1px solid black;"></canvas>
             </div>
         </div>
     </body>

@@ -7,11 +7,6 @@ app.service("FractalRenderer", function () {
             if (this.canvas === null)
                 alert("Canvas not set");
 
-            if ($scope.busy)
-                return;
-            $scope.busy = true;
-            $scope.done = 0;
-
             var context = this.canvas.getContext("2d");
             var width = this.canvas.width;
             var height = this.canvas.height;
@@ -38,17 +33,14 @@ app.service("FractalRenderer", function () {
 
                     var nPercent = Math.floor(n / $scope.m);
                     if (n != $scope.m)
-                        this.setPixelColor(context, i, j, nPercent, 0.85, 0.6);
+                        this.setPixelColor(context, i, j, nPercent, 0.85, nPercent + 0.5);
                     else
                         this.setPixelColor(context, i, j, 0, 0, 0);
                     y += stepY;
                 }
 
-                $scope.done = (i + 1) * height / totalPoints * 100;
                 x += stepX;
             }
-
-            $scope.busy = false;
         },
 
         setPixelColor: function (context, x, y, h, s, v) {
@@ -100,14 +92,12 @@ app.directive("fractalCanvas", ["FractalRenderer", function (FractalRenderer) {
     };
 }]);
 
-app.controller("FractalController", function ($scope, FractalRenderer) {
+app.controller("FractalController", function ($scope, $timeout, FractalRenderer) {
     $scope.xMin = -2;
     $scope.xMax = 0.5;
     $scope.yMin = -1.25;
     $scope.yMax = 1.25;
     $scope.m = 50;
-    $scope.busy = false;
-    $scope.done = 0;
 
     $scope.renderFractal = function () {
         FractalRenderer.render($scope);

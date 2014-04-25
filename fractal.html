@@ -37,10 +37,7 @@
                     iterations
                     <input type="text" ng-model="m" />
                 </label>
-                <div class="progress" ng-show="busy">
-                    <span class="meter" style="width: {{done}}%;"></span>
-                </div>
-                <button class="button right" ng-click="renderFractal()" ng-show="!busy">Render fractal</button>
+                <button id="bRender" class="button right" ng-click="renderFractal()">Render fractal</button>
             </form>
         </div>
         <div class="small-9 columns">

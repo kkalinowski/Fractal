@@ -36,9 +36,9 @@ app.service("FractalRenderer", function () {
                         zr = temp;
                     }
 
-                    var nPercent = Math.floor(n / $scope.m * 100);
+                    var nPercent = Math.floor(n / $scope.m);
                     if (n != $scope.m)
-                        this.setPixelColor(context, i, j, 3.6 * nPercent, 0.85, 0.8);
+                        this.setPixelColor(context, i, j, nPercent, 0.85, 0.6);
                     else
                         this.setPixelColor(context, i, j, 0, 0, 0);
                     y += stepY;
@@ -105,7 +105,7 @@ app.controller("FractalController", function ($scope, FractalRenderer) {
     $scope.xMax = 0.5;
     $scope.yMin = -1.25;
     $scope.yMax = 1.25;
-    $scope.m = 100;
+    $scope.m = 50;
     $scope.busy = false;
     $scope.done = 0;
 

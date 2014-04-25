@@ -2,45 +2,51 @@
 <html>
 <head>
     <title>Fractal renderer</title>
+    <!--<link rel="stylesheet" href="css/normalize.css" media="all" />-->
+    <link rel="stylesheet" href="css/foundation.css" media="all" />
 </head>
-    <body ng-app="FractalApp" ng-controller="FractalController">
-        <script src="js/vendor/jquery.js" type="text/javascript"></script>
-        <script src="js/foundation/foundation.js" type="text/javascript"></script>
-        <script src="js/angular/angular.js" type="text/javascript"></script>
-        <script src="js/app/app.js" type="text/javascript"></script>
-        <script>
-            $(document).foundation();
-        </script>
+<body ng-app="FractalApp" ng-controller="FractalController">
+    <script src="js/vendor/jquery.js" type="text/javascript"></script>
+    <script src="js/foundation/foundation.js" type="text/javascript"></script>
+    <script src="js/angular/angular.js" type="text/javascript"></script>
+    <script src="js/app/app.js" type="text/javascript"></script>
+    <script>
+        $(document).foundation();
+    </script>
 
-        <div class="row">
-            <div class="small-3 columns">
-                <form>
-                    <label>
-                        x min
-                        <input type="text" ng-model="xMin" />
-                    </label>
-                    <label>
-                        x max
-                        <input type="text" ng-model="xMax" />
-                    </label>
-                    <label>
-                        y min
-                        <input type="text" ng-model="yMin" />
-                    </label>
-                    <label>
-                        y max
-                        <input type="text" ng-model="yMax" />
-                    </label>
-                    <label>
-                        iterations
-                        <input type="text" ng-model="iterations" />
-                    </label>
-                    <button class="button" ng-click="renderFractal()">Render fractal</button>
-                </form>
-            </div>
-            <div class="small-9 columns">
-                <canvas id="cnvs" fractal-canvas width="400" height="400" style="border: 1px solid black;"></canvas>
-            </div>
+    <div class="row">
+        <div class="small-3 columns">
+            <form>
+                <label>
+                    x min
+                    <input type="text" ng-model="xMin" />
+                </label>
+                <label>
+                    x max
+                    <input type="text" ng-model="xMax" />
+                </label>
+                <label>
+                    y min
+                    <input type="text" ng-model="yMin" />
+                </label>
+                <label>
+                    y max
+                    <input type="text" ng-model="yMax" />
+                </label>
+                <label>
+                    iterations
+                    <input type="text" ng-model="m" />
+                </label>
+                <div class="progress" ng-show="busy">
+                    <span class="meter" style="width: {{done}}%;"></span>
+                </div>
+                <button class="button right" ng-click="renderFractal()" ng-show="!busy">Render fractal</button>
+            </form>
         </div>
-    </body>
+        <div class="small-9 columns">
+            <canvas id="cnvs" fractal-canvas width="400" height="400" style="border: 1px solid black;"></canvas>
+        </div>
+    </div>
+</body>
+
 </html>

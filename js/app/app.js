@@ -1,47 +1,54 @@
 ﻿var app = angular.module("FractalApp", []);
 
-app.service("FractalRenderer", function() {
+app.service("FractalRenderer", function () {
     var renderer = {
         canvas: null,
-        render: function(scope) {
+        render: function ($scope) {
             if (this.canvas === null)
                 alert("Canvas not set");
+
+            if ($scope.busy)
+                return;
+            $scope.busy = true;
+            $scope.done = 0;
 
             var context = this.canvas.getContext("2d");
             var width = this.canvas.width;
             var height = this.canvas.height;
+            var totalPoints = width * height;
 
-            //this.setBlackBackground(context, width, height);
-
-            var integralX = (scope.xMax - scope.xMin) / width;
-            var integralY = (scope.yMin - scope.yMax) / height;
-            var x = scope.xMin;
-            var y = scope.yMin;
+            var stepX = Math.abs($scope.xMax - $scope.xMin) / width;
+            var stepY = Math.abs($scope.yMin - $scope.yMax) / height;
+            var x = $scope.xMin;
+            var y = $scope.yMin;
 
             for (var i = 0; i < width; i++) {
-                y = scope.yMin;
-                for (var j = 0; j < height; j++) {
-                    var x1 = 0, y1 = 0;
-                    var k = 0;
+                y = $scope.yMin;
 
-                    while (k < scope.iterations && Math.sqrt(x1 * x1 + y1 * y1) < 2 ) {
-                        k++;
-                        var xx = x1 * x1 - y1 * y1 + x;
-                        y1 = 2 * x1 * y1 + y;
-                        x1 = xx;
+                for (var j = 0; j < height; j++) {
+                    var zr = 0, zi = 0;
+                    var n = 0;
+
+                    while (n < $scope.m && zr * zr + zi * zi < 4) {
+                        n++;
+                        var temp = zr * zr - zi * zi + x;
+                        zi = 2 * zr * zi + y;
+                        zr = temp;
                     }
 
-                    var kPercent = k / scope.iterations;
-                    var val = Math.floor(kPercent  * 2000);
-
-                    this.setPixelColor(context, i, j, val, val, val);
-
-                    y += integralY;
+                    var nPercent = Math.floor(n / $scope.m*100);
+                    this.setPixelColor(context, i, j, nPercent, nPercent, nPercent);
+                    y += stepY;
                 }
-                x += integralX;
+
+                $scope.done = (i + 1) * height / totalPoints * 100;
+                x += stepX;
             }
+
+            $scope.busy = false;
         },
-        setPixelColor: function(context, x, y, r, g, b){
+
+        setPixelColor: function (context, x, y, r, g, b) {
             var imageData = context.createImageData(1, 1);
             var data = imageData.data;
             data[0] = r;
@@ -49,10 +56,6 @@ app.service("FractalRenderer", function() {
             data[2] = b;
             data[3] = 255;
             context.putImageData(imageData, x, y);
-        },
-        setBlackBackground: function (context, width, height) {
-            context.fillStyle = "#000000";
-            context.fillRect(0, 0, width, height);
         },
     };
 
@@ -70,13 +73,15 @@ app.directive("fractalCanvas", ["FractalRenderer", function (FractalRenderer) {
 }]);
 
 app.controller("FractalController", function ($scope, FractalRenderer) {
-    $scope.xMin = -2.1;
-    $scope.xMax = 1;
-    $scope.yMin = -1.3;
-    $scope.yMax = 1.3;
-    $scope.iterations = 100;
+    $scope.xMin = -2;
+    $scope.xMax = 0.5;
+    $scope.yMin = -1.25;
+    $scope.yMax = 1.25;
+    $scope.m = 100;
+    $scope.busy = false;
+    $scope.done = 0;
 
-    $scope.renderFractal = function() {
+    $scope.renderFractal = function () {
         FractalRenderer.render($scope);
     };
 });

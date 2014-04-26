@@ -10,7 +10,6 @@ app.service("FractalRenderer", function () {
             var context = this.canvas.getContext("2d");
             var width = this.canvas.width;
             var height = this.canvas.height;
-            var totalPoints = width * height;
 
             var stepX = Math.abs($scope.xMax - $scope.xMin) / width;
             var stepY = Math.abs($scope.yMin - $scope.yMax) / height;
@@ -31,16 +30,18 @@ app.service("FractalRenderer", function () {
                         zr = temp;
                     }
 
-                    var nPercent = Math.floor(n / $scope.m);
+                    var nPercent = n / $scope.m;
                     if (n != $scope.m)
-                        this.setPixelColor(context, i, j, nPercent, 0.85, nPercent + 0.5);
+                        this.setPixelColor(context, i, j, nPercent, 0.85, 0.8);
                     else
                         this.setPixelColor(context, i, j, 0, 0, 0);
+
                     y += stepY;
                 }
 
                 x += stepX;
             }
+            alert("done");
         },
 
         setPixelColor: function (context, x, y, h, s, v) {

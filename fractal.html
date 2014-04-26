@@ -2,8 +2,8 @@
 <html>
 <head>
     <title>Fractal renderer</title>
-    <!--<link rel="stylesheet" href="css/normalize.css" media="all" />-->
     <link rel="stylesheet" href="css/foundation.css" media="all" />
+    <link rel="stylesheet" href="css/app.css" media="all" />
 </head>
 <body ng-app="FractalApp" ng-controller="FractalController">
     <script src="js/vendor/jquery.js" type="text/javascript"></script>
@@ -17,6 +17,7 @@
 
     <div class="row">
         <div class="small-3 columns">
+            <h1>Fractal renderer</h1>
             <form>
                 <label>
                     x min
@@ -42,11 +43,11 @@
                     chosen fractal
                     <select ng-model="chosenFractal" ng-options="f for f in availableFractals"></select>
                 </label>
-                <button id="bRender" class="button right" ng-click="renderFractal()">Render fractal</button>
+                <button id="bRender" class="button right" ng-click="renderFractal()">Render fractal<br/><small>may take a while...</small></button>
             </form>
         </div>
         <div class="small-9 columns">
-            <canvas id="cnvs" fractal-canvas width="400" height="400" style="border: 1px solid white;"></canvas>
+            <canvas id="cnvs" fractal-canvas width="800" height="800" style="margin-top: 2em;"></canvas>
         </div>
     </div>
 </body>

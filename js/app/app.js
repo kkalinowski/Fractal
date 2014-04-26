@@ -25,14 +25,14 @@ app.service("FractalRenderer", function () {
                 y = $scope.yMin;
 
                 for (var j = 0; j < height; j++) {
-                    var zr = 0, zi = 0;
+                    var z = new complex(0, 0);
                     var n = 0;
 
-                    while (n < $scope.m && zr * zr + zi * zi < 4) {
+                    while (n < $scope.m && z.sqAbs() < 4) {
                         n++;
-                        var temp = zr * zr - zi * zi + x;
-                        zi = 2 * zr * zi + y;
-                        zr = temp;
+                        var temp = z.r * z.r - z.i * z.i + x;
+                        z.i = 2 * z.r * z.i + y;
+                        z.r = temp;
                     }
 
                     var nPercent = n / $scope.m;

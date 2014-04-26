@@ -7,9 +7,14 @@ app.service("FractalRenderer", function () {
             if (this.canvas === null)
                 alert("Canvas not set");
 
-            var context = this.canvas.getContext("2d");
+            var ctx = this.canvas.getContext("2d");
             var width = this.canvas.width;
             var height = this.canvas.height;
+
+            var memCanvas = document.createElement("canvas");
+            var memCtx = memCanvas.getContext("2d");
+            memCanvas.width = width;
+            memCanvas.height = height;
 
             var stepX = Math.abs($scope.xMax - $scope.xMin) / width;
             var stepY = Math.abs($scope.yMin - $scope.yMax) / height;
@@ -32,26 +37,27 @@ app.service("FractalRenderer", function () {
 
                     var nPercent = n / $scope.m;
                     if (n != $scope.m)
-                        this.setPixelColor(context, i, j, nPercent, 0.85, 0.8);
+                        this.setPixelColor(memCtx, i, j, nPercent, 0.85, 0.8);
                     else
-                        this.setPixelColor(context, i, j, 0, 0, 0);
+                        this.setPixelColor(memCtx, i, j, 0, 0, 0);
 
                     y += stepY;
                 }
 
                 x += stepX;
             }
-            alert("done");
+
+            ctx.drawImage(memCtx.canvas, 0, 0);
         },
 
-        setPixelColor: function (context, x, y, h, s, v) {
-            var imageData = context.createImageData(1, 1);
+        setPixelColor: function (ctx, x, y, h, s, v) {
+            var imageData = ctx.createImageData(1, 1);
             var rgb = this.HSVtoRGB(h, s, v);
             imageData.data[0] = rgb.r;
             imageData.data[1] = rgb.g;
             imageData.data[2] = rgb.b;
             imageData.data[3] = 255;
-            context.putImageData(imageData, x, y);
+            ctx.putImageData(imageData, x, y);
         },
 
         HSVtoRGB: function (h, s, v) {

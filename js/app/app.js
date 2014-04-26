@@ -56,6 +56,8 @@ app.service("FractalRenderer", function () {
                 return this.julia2;
             else if (fractalIndex == 3)
                 return this.julia3;
+            else if (fractalIndex == 4)
+                return this.burningShip;
             else
                 return null;
         },
@@ -119,6 +121,20 @@ app.service("FractalRenderer", function () {
             return n;
         },
 
+        burningShip: function (x, y, m) {
+            var z = new complex(0, 0);
+            var n = 0;
+
+            while (n < m && z.sqAbs() < 4) {
+                n++;
+                var temp = z.r * z.r - z.i * z.i + x;
+                z.i = 2 * Math.abs(z.r) * Math.abs(z.i) + y;
+                z.r = temp;
+            }
+
+            return n;
+        },
+
         setPixelColor: function (ctx, x, y, h, s, v) {
             var imageData = ctx.createImageData(1, 1);
             var rgb = this.HSVtoRGB(h, s, v);
@@ -174,7 +190,7 @@ app.controller("FractalController", function ($scope, $timeout, FractalRenderer)
     $scope.yMin = -1.25;
     $scope.yMax = 1.25;
     $scope.m = 50;
-    $scope.availableFractals = ["Mandelbrot", "Julia's C=-0.1+0.65i", "Julia's C=-0.70176+0.3842i", "Julia's C=-0.8+0.156i"];
+    $scope.availableFractals = ["Mandelbrot", "Julia's C=-0.1+0.65i", "Julia's C=-0.70176+0.3842i", "Julia's C=-0.8+0.156i", "Burning Ship"];
     $scope.chosenFractal = "Mandelbrot";
 
     $scope.renderFractal = function () {

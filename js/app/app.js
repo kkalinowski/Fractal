@@ -25,13 +25,24 @@ app.service("FractalRenderer", function () {
                 y = $scope.yMin;
 
                 for (var j = 0; j < height; j++) {
-                    var z = new complex(0, 0);
+                    //var z = new complex(0, 0);
+                    //var n = 0;
+
+                    //while (n < $scope.m && z.sqAbs() < 4) {
+                    //    n++;
+                    //    var temp = z.r * z.r - z.i * z.i + x;
+                    //    z.i = 2 * z.r * z.i + y;
+                    //    z.r = temp;
+                    //}
+
+                    var z = new complex(x, y);
                     var n = 0;
+                    var c = new complex(-0.1, 0.65);
 
                     while (n < $scope.m && z.sqAbs() < 4) {
                         n++;
-                        var temp = z.r * z.r - z.i * z.i + x;
-                        z.i = 2 * z.r * z.i + y;
+                        var temp = z.r * z.r - z.i * z.i + c.r;
+                        z.i = 2 * z.r * z.i + c.i;
                         z.r = temp;
                     }
 
@@ -101,7 +112,7 @@ app.directive("fractalCanvas", ["FractalRenderer", function (FractalRenderer) {
 
 app.controller("FractalController", function ($scope, $timeout, FractalRenderer) {
     $scope.xMin = -2;
-    $scope.xMax = 0.5;
+    $scope.xMax = 1.5;
     $scope.yMin = -1.25;
     $scope.yMax = 1.25;
     $scope.m = 50;

@@ -1,4 +1,4 @@
 Fractal
 =======
 
-Fractal renderer using TypeScript and HTML5
+Fractal renderer using HTML5's canvas with small help of angular and foundation

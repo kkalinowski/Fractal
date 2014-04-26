@@ -46,14 +46,18 @@ app.service("FractalRenderer", function () {
             ctx.drawImage(memCtx.canvas, 0, 0);
         },
 
-        getFractalFunc: function($scope) {
+        getFractalFunc: function ($scope) {
             var fractalIndex = $scope.availableFractals.indexOf($scope.chosenFractal);
             if (fractalIndex == 0)
                 return this.mandelbrot;
             else if (fractalIndex == 1)
-                return this.julia;
+                return this.julia1;
+            else if (fractalIndex == 2)
+                return this.julia2;
+            else if (fractalIndex == 3)
+                return this.julia3;
             else
-                return null;                
+                return null;
         },
 
         mandelbrot: function (x, y, m) {
@@ -70,10 +74,40 @@ app.service("FractalRenderer", function () {
             return n;
         },
 
-        julia: function (x, y, m) {
+        julia1: function (x, y, m) {
             var z = new complex(x, y);
             var n = 0;
             var c = new complex(-0.1, 0.65);
+
+            while (n < m && z.sqAbs() < 4) {
+                n++;
+                var temp = z.r * z.r - z.i * z.i + c.r;
+                z.i = 2 * z.r * z.i + c.i;
+                z.r = temp;
+            }
+
+            return n;
+        },
+
+        julia2: function (x, y, m) {
+            var z = new complex(x, y);
+            var n = 0;
+            var c = new complex(-0.70176, 0.3842);
+
+            while (n < m && z.sqAbs() < 4) {
+                n++;
+                var temp = z.r * z.r - z.i * z.i + c.r;
+                z.i = 2 * z.r * z.i + c.i;
+                z.r = temp;
+            }
+
+            return n;
+        },
+
+        julia3: function (x, y, m) {
+            var z = new complex(x, y);
+            var n = 0;
+            var c = new complex(-0.8, 0.156);
 
             while (n < m && z.sqAbs() < 4) {
                 n++;
@@ -140,7 +174,7 @@ app.controller("FractalController", function ($scope, $timeout, FractalRenderer)
     $scope.yMin = -1.25;
     $scope.yMax = 1.25;
     $scope.m = 50;
-    $scope.availableFractals = ["Mandelbrot", "Julia's C=-0.1+i0.65"];
+    $scope.availableFractals = ["Mandelbrot", "Julia's C=-0.1+0.65i", "Julia's C=-0.70176+0.3842i", "Julia's C=-0.8+0.156i"];
     $scope.chosenFractal = "Mandelbrot";
 
     $scope.renderFractal = function () {

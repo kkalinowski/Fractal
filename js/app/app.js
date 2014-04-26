@@ -21,31 +21,16 @@ app.service("FractalRenderer", function () {
             var x = $scope.xMin;
             var y = $scope.yMin;
 
+            var fractalFunc = this.getFractalFunc($scope);
+            if (fractalFunc == null) {
+                alert("Unknown fractal");
+                return;
+            }
+
             for (var i = 0; i < width; i++) {
                 y = $scope.yMin;
-
                 for (var j = 0; j < height; j++) {
-                    //var z = new complex(0, 0);
-                    //var n = 0;
-
-                    //while (n < $scope.m && z.sqAbs() < 4) {
-                    //    n++;
-                    //    var temp = z.r * z.r - z.i * z.i + x;
-                    //    z.i = 2 * z.r * z.i + y;
-                    //    z.r = temp;
-                    //}
-
-                    var z = new complex(x, y);
-                    var n = 0;
-                    var c = new complex(-0.1, 0.65);
-
-                    while (n < $scope.m && z.sqAbs() < 4) {
-                        n++;
-                        var temp = z.r * z.r - z.i * z.i + c.r;
-                        z.i = 2 * z.r * z.i + c.i;
-                        z.r = temp;
-                    }
-
+                    var n = fractalFunc(x, y, $scope.m);
                     var nPercent = n / $scope.m;
                     if (n != $scope.m)
                         this.setPixelColor(memCtx, i, j, nPercent, 0.85, 0.8);
@@ -59,6 +44,45 @@ app.service("FractalRenderer", function () {
             }
 
             ctx.drawImage(memCtx.canvas, 0, 0);
+        },
+
+        getFractalFunc: function($scope) {
+            var fractalIndex = $scope.availableFractals.indexOf($scope.chosenFractal);
+            if (fractalIndex == 0)
+                return this.mandelbrot;
+            else if (fractalIndex == 1)
+                return this.julia;
+            else
+                return null;                
+        },
+
+        mandelbrot: function (x, y, m) {
+            var z = new complex(0, 0);
+            var n = 0;
+
+            while (n < m && z.sqAbs() < 4) {
+                n++;
+                var temp = z.r * z.r - z.i * z.i + x;
+                z.i = 2 * z.r * z.i + y;
+                z.r = temp;
+            }
+
+            return n;
+        },
+
+        julia: function (x, y, m) {
+            var z = new complex(x, y);
+            var n = 0;
+            var c = new complex(-0.1, 0.65);
+
+            while (n < m && z.sqAbs() < 4) {
+                n++;
+                var temp = z.r * z.r - z.i * z.i + c.r;
+                z.i = 2 * z.r * z.i + c.i;
+                z.r = temp;
+            }
+
+            return n;
         },
 
         setPixelColor: function (ctx, x, y, h, s, v) {
@@ -116,6 +140,8 @@ app.controller("FractalController", function ($scope, $timeout, FractalRenderer)
     $scope.yMin = -1.25;
     $scope.yMax = 1.25;
     $scope.m = 50;
+    $scope.availableFractals = ["Mandelbrot", "Julia's C=-0.1+i0.65"];
+    $scope.chosenFractal = "Mandelbrot";
 
     $scope.renderFractal = function () {
         FractalRenderer.render($scope);

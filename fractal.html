@@ -38,6 +38,10 @@
                     iterations
                     <input type="text" ng-model="m" />
                 </label>
+                <label>
+                    chosen fractal
+                    <select ng-model="chosenFractal" ng-options="f for f in availableFractals"></select>
+                </label>
                 <button id="bRender" class="button right" ng-click="renderFractal()">Render fractal</button>
             </form>
         </div>

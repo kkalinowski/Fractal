@@ -16,10 +16,15 @@ app.service("FractalRenderer", function () {
             memCanvas.width = width;
             memCanvas.height = height;
 
-            var stepX = Math.abs($scope.xMax - $scope.xMin) / width;
-            var stepY = Math.abs($scope.yMin - $scope.yMax) / height;
-            var x = $scope.xMin;
-            var y = $scope.yMin;
+            var xMax = new Number($scope.xMax);
+            var xMin = new Number($scope.xMin);
+            var yMax = new Number($scope.yMax);
+            var yMin = new Number($scope.yMin);
+            var m = new Number($scope.m);
+            var stepX = Math.abs(xMax - xMin) / width;
+            var stepY = Math.abs(yMax - yMin) / height;
+            var x = xMin;
+            var y = yMin;
 
             var fractalFunc = this.getFractalFunc($scope);
             if (fractalFunc == null) {
@@ -28,11 +33,11 @@ app.service("FractalRenderer", function () {
             }
 
             for (var i = 0; i < width; i++) {
-                y = $scope.yMin;
+                y = yMin;
                 for (var j = 0; j < height; j++) {
-                    var n = fractalFunc(x, y, $scope.m);
-                    var nPercent = n / $scope.m;
-                    if (n != $scope.m)
+                    var n = fractalFunc(x, y, m);
+                    var nPercent = n / m;
+                    if (n != m)
                         this.setPixelColor(memCtx, i, j, nPercent, 0.85, 0.8);
                     else
                         this.setPixelColor(memCtx, i, j, 0, 0, 0);

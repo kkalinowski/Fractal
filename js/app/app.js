@@ -33,16 +33,16 @@ app.service("FractalRenderer", function () {
             }
 
             for (var i = 0; i < width; i++) {
-                y = yMin;
-                for (var j = 0; j < height; j++) {
+                y = yMax;
+                for (var j = height; j > 0; j--) {
                     var n = fractalFunc(x, y, m);
                     var nPercent = n / m;
                     if (n != m)
-                        this.setPixelColor(memCtx, i, j, nPercent, 0.85, 0.8);
+                        this.setPixelColor(memCtx, i, height - j, nPercent, 0.85, 0.8);
                     else
-                        this.setPixelColor(memCtx, i, j, 0, 0, 0);
+                        this.setPixelColor(memCtx, i, height - j, 0, 0, 0);
 
-                    y += stepY;
+                    y -= stepY;
                 }
 
                 x += stepX;
